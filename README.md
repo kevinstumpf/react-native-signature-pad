@@ -1,13 +1,15 @@
 # react-native-signature-pad
-React Native wrapper around @[szimek's](https://github.com/szimek) HTML Canvas based [Signature Pad](https://github.com/szimek/signature_pad)
+React Native wrapper around @[szimek's](https://github.com/szimek) HTML5 Canvas based [Signature Pad](https://github.com/szimek/signature_pad)
 
 - Supports Android and iOS
+- Pure JavaScript implementation with no native dependencies
 - Tested with RN 0.20
 - Can easily be rotated using the "transform" style
+- Generates a base64 encoded png image of the signature
 
 ## Demo
 
-![SignaturePadDemo](https://cloud.githubusercontent.com/assets/7293984/13274796/f3bf0370-da62-11e5-88df-5827a9617e77.png)
+![SignaturePadDemo](https://cloud.githubusercontent.com/assets/7293984/13297035/303fefc6-dae5-11e5-99e8-edb8335633b5.gif)
 
 ## Installation
 
