@@ -15,11 +15,12 @@ import injectedApplication from './injectedJavaScript/application';
 import injectedErrorHandler from './injectedJavaScript/errorHandler';
 import injectedExecuteNativeFunction from './injectedJavaScript/executeNativeFunction';
 
-export default class SignaturePad extends Component {  
+class SignaturePad extends Component {  
 
   static propTypes = {
     onChange: PropTypes.func,
-    onError: PropTypes.func
+    onError: PropTypes.func,
+    style: View.propTypes.style
   };
 
   static defaultProps = {
@@ -27,7 +28,8 @@ export default class SignaturePad extends Component {
     },
     onError: () => {
 
-    }
+    },
+    style: {}
   };
 
   constructor(props) {
@@ -109,16 +111,16 @@ export default class SignaturePad extends Component {
   };
   
   render = () => {
-    return (
-      <View style={{flex: 1}}>
+    return (      
         <WebView automaticallyAdjustContentInsets={false}
                  onNavigationStateChange={this._onNavigationChange}
                  renderError={this._renderError}
                  renderLoading={this._renderLoading}
                  source={this.source}
                  javaScriptEnabled={true}
-                 style={{flex: 1, backgroundColor: 'white'}}/>
-      </View>
+                 style={this.props.style}/>      
     )
   };
 }
+
+module.exports = SignaturePad;
