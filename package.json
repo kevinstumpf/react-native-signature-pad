@@ -1,0 +1,29 @@
+{
+  "name": "react-native-signature-pad",
+  "version": "0.0.1",
+  "description": "React Native wrapper around szimek's Canvas based Signature Pad",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DispatcherInc/react-native-signature-pad.git"
+  },
+  "keywords": [
+    "react-native",
+    "react-component",
+    "ios",
+    "android",
+    "signature",
+    "pad",
+    "signaturepad",
+    "canvas"
+  ],
+  "author": "Kevin Stumpf",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DispatcherInc/react-native-signature-pad/issues"
+  },
+  "homepage": "https://github.com/DispatcherInc/react-native-signature-pad#readme"
+}
