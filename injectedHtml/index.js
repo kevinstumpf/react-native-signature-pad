@@ -17,7 +17,7 @@ var content = `<html>
   }
 
   </style>
-  <body">
+  <body>
     <canvas style="background-color: rgb(255,255,255); margin-left: 0; margin-top: 0;"></canvas>
     <script>
       %SCRIPTPLACEHOLDER%
