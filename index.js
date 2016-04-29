@@ -41,7 +41,7 @@ class SignaturePad extends Component {
   }
 
   _onNavigationChange = (args) => {
-    this._parseMessageFromWebViewNavigationChange(args.url);
+    this._parseMessageFromWebViewNavigationChange(unescape(args.url));
   };
 
   _parseMessageFromWebViewNavigationChange = (newUrl) => {
