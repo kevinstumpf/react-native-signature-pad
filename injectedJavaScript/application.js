@@ -23,7 +23,7 @@ var content = penColor => `
 
     var enableSignaturePadFunctionality = function () {
       var signaturePad = new SignaturePad(signaturePadCanvas, {
-        penColor: '${penColor}',
+        penColor: '${penColor || 'black'}',
         onEnd: function() { finishedStroke(signaturePad.toDataURL()); }
       });
       /* signaturePad.translateMouseCoordinates = function (point) {
