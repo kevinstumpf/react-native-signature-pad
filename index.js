@@ -20,11 +20,13 @@ import injectedApplication from './injectedJavaScript/application';
 import injectedErrorHandler from './injectedJavaScript/errorHandler';
 import injectedExecuteNativeFunction from './injectedJavaScript/executeNativeFunction';
 
-class SignaturePad extends Component {  
+class SignaturePad extends Component {
 
   static propTypes = {
     onChange: PropTypes.func,
     onError: PropTypes.func,
+    backgroundColor: PropTypes.string,
+    penColor: PropTypes.string,
     style: View.propTypes.style
   };
 
@@ -41,8 +43,9 @@ class SignaturePad extends Component {
     super(props);
     this.state = {base64DataUrl: null};
 
-    var injectedJavaScript = injectedExecuteNativeFunction + injectedErrorHandler + injectedSignaturePad + injectedApplication;
-    this.source = {html: htmlContent.replace('%SCRIPTPLACEHOLDER%', injectedJavaScript)}; //We don't use WebView's injectedJavaScript because on Android, the WebView re-injects the JavaScript upon every url change. Given that we use url changes to communicate signature changes to the React Native app, the JS is re-injected every time a stroke is drawn.
+    var injectedJavaScript = injectedExecuteNativeFunction + injectedErrorHandler + injectedSignaturePad + injectedApplication(props.penColor);
+    var html = htmlContent(injectedJavaScript, props.backgroundColor);
+    this.source = {html}; //We don't use WebView's injectedJavaScript because on Android, the WebView re-injects the JavaScript upon every url change. Given that we use url changes to communicate signature changes to the React Native app, the JS is re-injected every time a stroke is drawn.
   }
 
   _onNavigationChange = (args) => {
@@ -114,16 +117,16 @@ class SignaturePad extends Component {
   _renderLoading = (args) => {
 
   };
-  
+
   render = () => {
-    return (      
+    return (
         <WebView automaticallyAdjustContentInsets={false}
                  onNavigationStateChange={this._onNavigationChange}
                  renderError={this._renderError}
                  renderLoading={this._renderLoading}
                  source={this.source}
                  javaScriptEnabled={true}
-                 style={this.props.style}/>      
+                 style={this.props.style}/>
     )
   };
 }
