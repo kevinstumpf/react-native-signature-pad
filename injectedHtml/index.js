@@ -1,4 +1,4 @@
-var content = (script, backgroundColor) =>
+var content = script =>
   `<html>
     <style>
     *
@@ -19,7 +19,7 @@ var content = (script, backgroundColor) =>
 
     </style>
     <body>
-      <canvas style="background-color: ${backgroundColor || 'rgb(255, 255, 255)'}; margin-left: 0; margin-top: 0;"></canvas>
+      <canvas style="margin-left: 0; margin-top: 0;"></canvas>
       <script>
         ${script}
       </script>

@@ -1,4 +1,4 @@
-var content = penColor => `
+var content = (penColor, backgroundColor) => `
 
   var showSignaturePad = function (signaturePadCanvas, bodyWidth, bodyHeight) {
     /*We're rotating by 90% -> Flip X and Y*/
@@ -24,6 +24,7 @@ var content = penColor => `
     var enableSignaturePadFunctionality = function () {
       var signaturePad = new SignaturePad(signaturePadCanvas, {
         penColor: '${penColor || 'black'}',
+        backgroundColor: '${backgroundColor || 'white'}',
         onEnd: function() { finishedStroke(signaturePad.toDataURL()); }
       });
       /* signaturePad.translateMouseCoordinates = function (point) {
