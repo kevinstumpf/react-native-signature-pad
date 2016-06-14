@@ -6,13 +6,13 @@ var ReactNative = require('react-native');
 var {
   PropTypes,
   Component,
-  StyleSheet,
 } = React;
 
 var {
   View,
   WebView,
-  } = ReactNative;
+  StyleSheet,
+} = ReactNative;
 
 
 import htmlContent from './injectedHtml';
@@ -26,7 +26,8 @@ class SignaturePad extends Component {
   static propTypes = {
     onChange: PropTypes.func,
     onError: PropTypes.func,
-    style: View.propTypes.style
+    style: View.propTypes.style,
+    penColor: PropTypes.string,
   };
 
   static defaultProps = {
@@ -41,10 +42,8 @@ class SignaturePad extends Component {
   constructor(props) {
     super(props);
     this.state = {base64DataUrl: null};
-
-    const { backgroundColor, color } = StyleSheet.flatten(props.style);
-
-    var injectedJavaScript = injectedExecuteNativeFunction + injectedErrorHandler + injectedSignaturePad + injectedApplication(color);
+    const { backgroundColor } = StyleSheet.flatten(props.style);
+    var injectedJavaScript = injectedExecuteNativeFunction + injectedErrorHandler + injectedSignaturePad + injectedApplication(props.penColor);
     var html = htmlContent(injectedJavaScript, backgroundColor);
     this.source = {html}; //We don't use WebView's injectedJavaScript because on Android, the WebView re-injects the JavaScript upon every url change. Given that we use url changes to communicate signature changes to the React Native app, the JS is re-injected every time a stroke is drawn.
   }
