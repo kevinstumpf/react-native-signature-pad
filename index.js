@@ -1,18 +1,11 @@
 'use strict';
 
-var React = require('react');
-var ReactNative = require('react-native');
-
-var {
-  PropTypes,
-  Component,
-} = React;
-
-var {
+import React, { Component, PropTypes } from 'react';
+import {
   View,
   WebView,
   StyleSheet,
-} = ReactNative;
+} from 'react-native';
 
 
 import htmlContent from './injectedHtml';
