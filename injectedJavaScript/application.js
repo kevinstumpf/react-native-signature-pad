@@ -1,4 +1,4 @@
-var content = `
+var content = (penColor, backgroundColor) => `
 
   var showSignaturePad = function (signaturePadCanvas, bodyWidth, bodyHeight) {
     /*We're rotating by 90% -> Flip X and Y*/
@@ -22,7 +22,11 @@ var content = `
     };
 
     var enableSignaturePadFunctionality = function () {
-      var signaturePad = new SignaturePad(signaturePadCanvas, {onEnd: function() { finishedStroke(signaturePad.toDataURL()); }});
+      var signaturePad = new SignaturePad(signaturePadCanvas, {
+        penColor: '${penColor || 'black'}',
+        backgroundColor: '${backgroundColor || 'white'}',
+        onEnd: function() { finishedStroke(signaturePad.toDataURL()); }
+      });
       /* signaturePad.translateMouseCoordinates = function (point) {
         var translatedY = point.x;
         var translatedX = width - point.y;
@@ -46,7 +50,7 @@ var content = `
   if(!bodyHeight) {
     bodyHeight = window.innerHeight;
   }
-  
+
   var canvasElement = document.querySelector('canvas');
   showSignaturePad(canvasElement, bodyWidth, bodyHeight);
 `;
