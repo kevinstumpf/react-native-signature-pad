@@ -15,7 +15,7 @@
  * http://www.lemoda.net/maths/bezier-length/index.html
  *
  */
-var content = `var SignaturePad = (function (document) {
+var content = exportBackgroundColor => `var SignaturePad = (function (document) {
   "use strict";
 
   var SignaturePad = function (canvas, options) {
@@ -53,7 +53,24 @@ var content = `var SignaturePad = (function (document) {
 
   SignaturePad.prototype.toDataURL = function (imageType, quality) {
     var canvas = this._canvas;
-    return canvas.toDataURL.apply(canvas, arguments);
+    var exportBackgroundColor = ${exportBackgroundColor
+      ? "'" + exportBackgroundColor + "'"
+      : null}
+
+    if (!exportBackgroundColor) {
+      return canvas.toDataURL.apply(canvas, arguments);
+    }
+
+    var exportCanvas = document.createElement('canvas');
+    exportCanvas.width = canvas.width;
+    exportCanvas.height = canvas.height;
+
+    var exportCtx = exportCanvas.getContext('2d');
+    exportCtx.fillStyle = exportBackgroundColor;
+    exportCtx.fillRect(0, 0, canvas.width, canvas.height);
+    exportCtx.drawImage(canvas, 0, 0);
+
+    return exportCanvas.toDataURL.apply(exportCanvas, arguments);
   };
 
   SignaturePad.prototype.fromDataURL = function (dataUrl) {
