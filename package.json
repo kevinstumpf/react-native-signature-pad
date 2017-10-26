@@ -1,6 +1,6 @@
 {
   "name": "react-native-signature-pad",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "React Native wrapper around szimek's Canvas based Signature Pad",
   "main": "index.js",
   "scripts": {
@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/DispatcherInc/react-native-signature-pad/issues"
   },
-  "homepage": "https://github.com/DispatcherInc/react-native-signature-pad#readme"
+  "homepage": "https://github.com/DispatcherInc/react-native-signature-pad#readme",
+  "dependencies": {
+    "prop-types": "^15.6.0"
+  }
 }
