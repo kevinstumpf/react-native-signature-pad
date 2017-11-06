@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
   View,
+  ViewPropTypes,
   WebView,
   StyleSheet,
 } from 'react-native';
@@ -21,7 +22,7 @@ class SignaturePad extends Component {
   static propTypes = {
     onChange: PropTypes.func,
     onError: PropTypes.func,
-    style: View.propTypes.style,
+    style: ViewPropTypes.style,
     penColor: PropTypes.string,
     dataURL: PropTypes.string,
   };
