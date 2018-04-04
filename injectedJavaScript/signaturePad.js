@@ -169,10 +169,12 @@ var content = `var SignaturePad = (function (document) {
 
   SignaturePad.prototype._createPoint = function (event) {
     var rect = this._canvas.getBoundingClientRect();
-    var point = new Point(
-      event.clientX - rect.left,
-      event.clientY - rect.top
-    );
+    var x = event.clientX - rect.left;
+    var y = event.clientY - rect.top;
+    // if point is outside of the canvas, reset x,y back to 0
+    x = x < 0 ? 0 : Math.min(x, rect.width);
+    y = y < 0 ? 0 : Math.min(y, rect.height);
+    var point = new Point(x, y);
 
     if(this.translateMouseCoordinates)
       this.translateMouseCoordinates(point);
