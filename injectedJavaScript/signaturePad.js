@@ -153,7 +153,7 @@ var content = `var SignaturePad = (function (document) {
       var pointOutOfCanvas = (x < 0 || y < 0 || x > rect.width || y > rect.height); // checking if point is outside of canvas
       if (pointOutOfCanvas) {
         if (!self.pointWasOutOfCanvas) {
-          // if the previous was inside of canvas and the new point it is outside
+          // if the previous point was inside of canvas and the new point is outside
           // call onEnd to capture the signature
           self.onEnd();
         }
