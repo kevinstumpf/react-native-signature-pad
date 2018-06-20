@@ -1,4 +1,4 @@
-var content = (penColor, backgroundColor, dataURL) => `
+var content = (penColor, backgroundColor, dataURL, defaultHeight, defaultWidth) => `
 
   var showSignaturePad = function (signaturePadCanvas, bodyWidth, bodyHeight) {
     /*We're rotating by 90% -> Flip X and Y*/
@@ -48,10 +48,10 @@ var content = (penColor, backgroundColor, dataURL) => `
   var bodyWidth = document.body.clientWidth;
   var bodyHeight = document.body.clientHeight;
   if(!bodyWidth) {
-    bodyWidth = window.innerWidth;
+    bodyWidth = window.innerWidth ? window.innerWidth : ${defaultWidth};
   }
   if(!bodyHeight) {
-    bodyHeight = window.innerHeight;
+    bodyHeight = window.innerHeight ? window.innerHeight : ${defaultHeight};
   }
 
   var canvasElement = document.querySelector('canvas');
