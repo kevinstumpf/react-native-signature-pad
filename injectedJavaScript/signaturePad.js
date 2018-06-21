@@ -1,8 +1,8 @@
 /*!
- * Signature Pad v1.3.2
+ * Signature Pad v1.5.3
  * https://github.com/szimek/signature_pad
  *
- * Copyright 2013 Szymon Nowak
+ * Copyright 2016 Szymon Nowak
  * Released under the MIT license
  *
  * The main idea and some parts of the code (e.g. drawing variable width Bézier curve) are taken from:
@@ -26,8 +26,8 @@ var content = `var SignaturePad = (function (document) {
     this.minWidth = opts.minWidth || 0.5;
     this.maxWidth = opts.maxWidth || 2.5;
     this.dotSize = opts.dotSize || function () {
-        return (this.minWidth + this.maxWidth) / 2;
-      };
+      return (this.minWidth + this.maxWidth) / 2;
+    };
     this.penColor = opts.penColor || "black";
     this.backgroundColor = opts.backgroundColor || "rgba(0,0,0,0)";
     this.onEnd = opts.onEnd;
@@ -36,6 +36,51 @@ var content = `var SignaturePad = (function (document) {
     this._canvas = canvas;
     this._ctx = canvas.getContext("2d");
     this.clear();
+
+    /* we need add these inline so they are available to unbind while still having
+       access to 'self' we could use _.bind but it's not worth adding a dependency */
+    this._handleMouseDown = function (event) {
+      if (event.which === 1) {
+        self._mouseButtonDown = true;
+        self._strokeBegin(event);
+      }
+    };
+
+    this._handleMouseMove = function (event) {
+      if (self._mouseButtonDown) {
+        self._strokeUpdate(event);
+      }
+    };
+
+    this._handleMouseUp = function (event) {
+      if (event.which === 1 && self._mouseButtonDown) {
+        self._mouseButtonDown = false;
+        self._strokeEnd(event);
+      }
+    };
+
+    this._handleTouchStart = function (event) {
+      if (event.targetTouches.length == 1) {
+        var touch = event.changedTouches[0];
+        self._strokeBegin(touch);
+       }
+    };
+
+    this._handleTouchMove = function (event) {
+      /* Prevent scrolling. */
+      event.preventDefault();
+
+      var touch = event.targetTouches[0];
+      self._strokeUpdate(touch);
+    };
+
+    this._handleTouchEnd = function (event) {
+      var wasCanvasTouched = event.target === self._canvas;
+      if (wasCanvasTouched) {
+        event.preventDefault();
+        self._strokeEnd(event);
+      }
+    };
 
     this._handleMouseEvents();
     this._handleTouchEvents();
@@ -58,12 +103,15 @@ var content = `var SignaturePad = (function (document) {
 
   SignaturePad.prototype.fromDataURL = function (dataUrl) {
     var self = this,
-      image = new Image();
+      image = new Image(),
+      ratio = window.devicePixelRatio || 1,
+      width = this._canvas.width / ratio,
+      height = this._canvas.height / ratio;
 
     this._reset();
     image.src = dataUrl;
     image.onload = function () {
-      self._ctx.drawImage(image, 0, 0, self._canvas.width, self._canvas.height);
+      self._ctx.drawImage(image, 0, 0, width, height);
     };
     this._isEmpty = false;
   };
@@ -104,55 +152,36 @@ var content = `var SignaturePad = (function (document) {
   };
 
   SignaturePad.prototype._handleMouseEvents = function () {
-    var self = this;
     this._mouseButtonDown = false;
 
-    this._canvas.addEventListener("mousedown", function (event) {
-      if (event.which === 1) {
-        self._mouseButtonDown = true;
-        self._strokeBegin(event);
-      }
-    });
-
-    this._canvas.addEventListener("mousemove", function (event) {
-      if (self._mouseButtonDown) {
-        self._strokeUpdate(event);
-      }
-    });
-
-    document.addEventListener("mouseup", function (event) {
-      if (event.which === 1 && self._mouseButtonDown) {
-        self._mouseButtonDown = false;
-        self._strokeEnd(event);
-      }
-    });
+    this._canvas.addEventListener("mousedown", this._handleMouseDown);
+    this._canvas.addEventListener("mousemove", this._handleMouseMove);
+    document.addEventListener("mouseup", this._handleMouseUp);
   };
 
   SignaturePad.prototype._handleTouchEvents = function () {
-    var self = this;
-
-    /* Pass touch events to canvas element on mobile IE. */
+    /* Pass touch events to canvas element on mobile IE11 and Edge. */
     this._canvas.style.msTouchAction = 'none';
+    this._canvas.style.touchAction = 'none';
 
-    this._canvas.addEventListener("touchstart", function (event) {
-      var touch = event.changedTouches[0];
-      self._strokeBegin(touch);
-    });
+    this._canvas.addEventListener("touchstart", this._handleTouchStart);
+    this._canvas.addEventListener("touchmove", this._handleTouchMove);
+    this._canvas.addEventListener("touchend", this._handleTouchEnd);
+  };
 
-    this._canvas.addEventListener("touchmove", function (event) {
-      /* Prevent scrolling. */
-      event.preventDefault();
+  SignaturePad.prototype.on = function () {
+    this._handleMouseEvents();
+    this._handleTouchEvents();
+  };
 
-      var touch = event.changedTouches[0];
-      self._strokeUpdate(touch);
-    });
+  SignaturePad.prototype.off = function () {
+    this._canvas.removeEventListener("mousedown", this._handleMouseDown);
+    this._canvas.removeEventListener("mousemove", this._handleMouseMove);
+    document.removeEventListener("mouseup", this._handleMouseUp);
 
-    document.addEventListener("touchend", function (event) {
-      var wasCanvasTouched = event.target === self._canvas;
-      if (wasCanvasTouched) {
-        self._strokeEnd(event);
-      }
-    });
+    this._canvas.removeEventListener("touchstart", this._handleTouchStart);
+    this._canvas.removeEventListener("touchmove", this._handleTouchMove);
+    this._canvas.removeEventListener("touchend", this._handleTouchEnd);
   };
 
   SignaturePad.prototype.isEmpty = function () {
@@ -169,15 +198,10 @@ var content = `var SignaturePad = (function (document) {
 
   SignaturePad.prototype._createPoint = function (event) {
     var rect = this._canvas.getBoundingClientRect();
-    var point = new Point(
+    return new Point(
       event.clientX - rect.left,
       event.clientY - rect.top
     );
-
-    if(this.translateMouseCoordinates)
-      this.translateMouseCoordinates(point);
-
-    return point;
   };
 
   SignaturePad.prototype._addPoint = function (point) {
@@ -189,7 +213,7 @@ var content = `var SignaturePad = (function (document) {
 
     if (points.length > 2) {
       /* To reduce the initial lag make it work with 3 points
-       by copying the first point to the beginning. */
+         by copying the first point to the beginning. */
       if (points.length === 3) points.unshift(points[0]);
 
       tmp = this._calculateCurveControlPoints(points[0], points[1], points[2]);
@@ -200,7 +224,7 @@ var content = `var SignaturePad = (function (document) {
       this._addCurve(curve);
 
       /* Remove the first element from the list,
-       so that we always have no more than 4 points in points array. */
+         so that we always have no more than 4 points in points array. */
       points.shift();
     }
   };
@@ -335,10 +359,10 @@ var content = `var SignaturePad = (function (document) {
   };
 
   Bezier.prototype._point = function (t, start, c1, c2, end) {
-    return          start * (1.0 - t) * (1.0 - t)  * (1.0 - t)
-      + 3.0 *  c1    * (1.0 - t) * (1.0 - t)  * t
-      + 3.0 *  c2    * (1.0 - t) * t          * t
-      +        end   * t         * t          * t;
+    return      start * (1.0 - t) * (1.0 - t)  * (1.0 - t)
+         + 3.0 *  c1  * (1.0 - t) * (1.0 - t)  * t
+         + 3.0 *  c2  * (1.0 - t) * t      * t
+         +    end   * t     * t      * t;
   };
 
   return SignaturePad;
