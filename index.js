@@ -134,6 +134,7 @@ class SignaturePad extends Component {
                  onMessage={this.onMessage}
                  renderError={this._renderError}
                  renderLoading={this._renderLoading}
+                 originWhitelist={['*']}
                  source={this.source}
                  scrollEnabled={false}
                  javaScriptEnabled={true}
