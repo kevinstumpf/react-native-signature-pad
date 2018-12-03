@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/DispatcherInc/react-native-signature-pad/issues"
   },
-  "homepage": "https://github.com/DispatcherInc/react-native-signature-pad#readme"
+  "homepage": "https://github.com/DispatcherInc/react-native-signature-pad#readme",
+  "dependencies": {
+    "prop-types": "^15.6.0"
+  }
 }
