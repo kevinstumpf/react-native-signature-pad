@@ -33,6 +33,8 @@ var content = `var SignaturePad = (function (document) {
     this.onEnd = opts.onEnd;
     this.onBegin = opts.onBegin;
 
+    this.pointWasOutOfCanvas = false;
+
     this._canvas = canvas;
     this._ctx = canvas.getContext("2d");
     this.clear();
@@ -144,7 +146,24 @@ var content = `var SignaturePad = (function (document) {
       event.preventDefault();
 
       var touch = event.changedTouches[0];
-      self._strokeUpdate(touch);
+      var rect = self._canvas.getBoundingClientRect();
+      var x = touch.clientX - rect.left;
+      var y = touch.clientY - rect.top;
+
+      var pointOutOfCanvas = (x < 0 || y < 0 || x > rect.width || y > rect.height); // checking if point is outside of canvas
+      if (pointOutOfCanvas) {
+        if (!self.pointWasOutOfCanvas) {
+          // if the previous point was inside of canvas and the new point is outside
+          // call onEnd to capture the signature
+          self.onEnd();
+        }
+        // set the pointWasOutOfCanvas to true to indicate that user has drawn out of canvas
+        self.pointWasOutOfCanvas = true;
+      } else {
+        // if the point is still inside canvas call _stokeUpdate as normal
+        self.pointWasOutOfCanvas = false;
+        self._strokeUpdate(touch);
+      }
     });
 
     document.addEventListener("touchend", function (event) {
