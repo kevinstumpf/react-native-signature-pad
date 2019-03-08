@@ -1,14 +1,8 @@
-'use strict';
-
-import React, { Component } from 'react';
+import {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  View,
-  WebView,
-  StyleSheet,
-  ViewPropTypes,
-} from 'react-native';
+import {StyleSheet, View, ViewPropTypes} from 'react-native';
+import WebView from 'react-native-webview';
 
 
 import htmlContent from './injectedHtml';
