@@ -10,7 +10,7 @@ import injectedApplication from './injectedJavaScript/application';
 import injectedErrorHandler from './injectedJavaScript/errorHandler';
 import injectedExecuteNativeFunction from './injectedJavaScript/executeNativeFunction';
 
-export class SignaturePad extends Component {
+export default class SignaturePad extends Component {
 
   static propTypes = {
     onChange: PropTypes.func,

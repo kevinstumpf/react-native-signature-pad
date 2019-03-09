@@ -25,7 +25,7 @@ $ yarn add react-native-signature-pad
 ```js
 import React, {Component} from 'react';
 import {View} from 'react-native';
-import {SignaturePad} from 'react-native-signature-pad';
+import SignaturePad from 'react-native-signature-pad';
 
 export default class Demo extends Component {
   render = () => {
