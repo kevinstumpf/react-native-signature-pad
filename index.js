@@ -1,8 +1,7 @@
-import {Component} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-
 import {StyleSheet, View, ViewPropTypes} from 'react-native';
-import WebView from 'react-native-webview';
+import {WebView} from 'react-native-webview';
 
 
 import htmlContent from './injectedHtml';
@@ -11,7 +10,7 @@ import injectedApplication from './injectedJavaScript/application';
 import injectedErrorHandler from './injectedJavaScript/errorHandler';
 import injectedExecuteNativeFunction from './injectedJavaScript/executeNativeFunction';
 
-class SignaturePad extends Component {
+export class SignaturePad extends Component {
 
   static propTypes = {
     onChange: PropTypes.func,
@@ -131,4 +130,3 @@ class SignaturePad extends Component {
   };
 }
 
-module.exports = SignaturePad;

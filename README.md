@@ -1,4 +1,7 @@
 # react-native-signature-pad
+
+[![star this repo](http://githubbadges.com/star.svg?user=kevinstumpf&repo=react-native-signature-pad&style=flat)](https://github.com/kevinstumpf/react-native-signature-pad) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![All Contributors](https://img.shields.io/badge/all_contributors-12-orange.svg?style=flat-square)](#contributors) [![Known Vulnerabilities](https://snyk.io/test/github/kevinstumpf/react-native-signature-pad/badge.svg?style=flat-square)](https://snyk.io/test/github/kevinstumpf/react-native-signature-pad) 
+
 React Native wrapper around @[szimek's](https://github.com/szimek) HTML5 Canvas based [Signature Pad](https://github.com/szimek/signature_pad)
 
 - Supports Android and iOS
@@ -14,20 +17,15 @@ React Native wrapper around @[szimek's](https://github.com/szimek) HTML5 Canvas 
 ## Installation
 
 ```sh
-npm install --save react-native-signature-pad
+$ yarn add react-native-signature-pad
 ```
 
 ## Example
 
 ```js
-var React = require('react-native');
-
-var {
-  View,
-  Component,
-  } = React;
-
-var SignaturePad = require('react-native-signature-pad');
+import React, {Component} from 'react';
+import {View} from 'react-native';
+import {SignaturePad} from 'react-native-signature-pad';
 
 export default class Demo extends Component {
   render = () => {
