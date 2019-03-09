@@ -1,6 +1,6 @@
 {
   "name": "react-native-signature-pad",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "React Native wrapper around szimek's Canvas based Signature Pad",
   "main": "index.js",
   "scripts": {
