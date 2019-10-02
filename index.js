@@ -23,6 +23,9 @@ export default class SignaturePad extends Component {
   static defaultProps = {
     onChange: () => {
     },
+    onStart: () => {
+
+    },
     onError: () => {
 
     },
@@ -76,7 +79,7 @@ export default class SignaturePad extends Component {
     }
 
     if(!this._attemptToExecuteNativeFunctionFromWebViewMessage(parameters)) {
-      logger.warn({parameters, hashUrl}, 'Received an unknown set of parameters from WebView');
+      console.warn({parameters, hashUrl}, 'Received an unknown set of parameters from WebView');
     }
   };
 
@@ -98,6 +101,10 @@ export default class SignaturePad extends Component {
     this.props.onError({details: args});
   };
 
+  _bridged_beginStroke = () => {
+    this.props.onStart();
+  };
+
   _bridged_finishedStroke = ({base64DataUrl}) => {
     this.props.onChange({base64DataUrl});
     this.setState({base64DataUrl});
@@ -113,7 +120,11 @@ export default class SignaturePad extends Component {
 
   onMessage = (event) => {
     var base64DataUrl = JSON.parse(event.nativeEvent.data);
-    this._bridged_finishedStroke(base64DataUrl);
+    if (base64DataUrl !== undefined) {
+      this._bridged_finishedStroke(base64DataUrl);
+    } else {
+      this._bridged_beginStroke();
+    }
   }
 
   render = () => {

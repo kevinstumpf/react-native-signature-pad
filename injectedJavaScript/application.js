@@ -17,6 +17,10 @@ var content = (penColor, backgroundColor, dataURL) => `
       signaturePadCanvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
     };
 
+    var beginStroke = function() {
+        executeNativeFunction('beginStroke', {});
+    };
+    
     var finishedStroke = function(base64DataUrl) {
        executeNativeFunction('finishedStroke', {base64DataUrl: base64DataUrl});
     };
@@ -25,6 +29,7 @@ var content = (penColor, backgroundColor, dataURL) => `
       var signaturePad = new SignaturePad(signaturePadCanvas, {
         penColor: '${penColor || 'black'}',
         backgroundColor: '${backgroundColor || 'white'}',
+        onBegin: function() { beginStroke(); },
         onEnd: function() { finishedStroke(signaturePad.toDataURL()); }
       });
       /* signaturePad.translateMouseCoordinates = function (point) {
