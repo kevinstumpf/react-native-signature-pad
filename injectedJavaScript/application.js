@@ -42,6 +42,13 @@ var content = (penColor, backgroundColor, dataURL) => `
 
     sizeSignaturePad();
     enableSignaturePadFunctionality();
+
+    window.addEventListener("resize", () => {
+      window.setTimeout(() => {
+        signaturePadCanvas.width = window.innerWidth
+        signaturePadCanvas.height = window.innerHeight
+      }, 100)
+    })
   };
 
 
