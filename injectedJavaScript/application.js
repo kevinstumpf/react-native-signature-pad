@@ -21,18 +21,14 @@ var content = (penColor, backgroundColor, dataURL) => `
        executeNativeFunction('finishedStroke', {base64DataUrl: base64DataUrl});
     };
 
+    let signaturePad
+
     var enableSignaturePadFunctionality = function () {
-      var signaturePad = new SignaturePad(signaturePadCanvas, {
+      signaturePad = new SignaturePad(signaturePadCanvas, {
         penColor: '${penColor || 'black'}',
         backgroundColor: '${backgroundColor || 'white'}',
         onEnd: function() { finishedStroke(signaturePad.toDataURL()); }
       });
-      /* signaturePad.translateMouseCoordinates = function (point) {
-        var translatedY = point.x;
-        var translatedX = width - point.y;
-        point.x = translatedX;
-        point.y = translatedY;
-      }; */
       signaturePad.minWidth = 1;
       signaturePad.maxWidth = 4;
       if ('${dataURL}') {
@@ -45,12 +41,16 @@ var content = (penColor, backgroundColor, dataURL) => `
 
     window.addEventListener("resize", () => {
       window.setTimeout(() => {
-        signaturePadCanvas.width = window.innerWidth
-        signaturePadCanvas.height = window.innerHeight
+        let signatureData
+        if (signaturePad) {
+          signatureData = signaturePad.toDataURL()
+          signaturePadCanvas.width = window.innerWidth
+          signaturePadCanvas.height = window.innerHeight
+          signaturePad.fromDataURL(signatureData)
+        }
       }, 100)
     })
   };
-
 
   var bodyWidth = document.body.clientWidth;
   var bodyHeight = document.body.clientHeight;
