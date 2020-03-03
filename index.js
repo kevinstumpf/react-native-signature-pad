@@ -116,16 +116,23 @@ export default class SignaturePad extends Component {
     this._bridged_finishedStroke(base64DataUrl);
   }
 
+  onLoad = () => {
+    this.setState({ loaded: true })
+  }
+
   render = () => {
     return (
-        <WebView automaticallyAdjustContentInsets={false}
-                 onNavigationStateChange={this._onNavigationChange}
-                 onMessage={this.onMessage}
-                 renderError={this._renderError}
-                 renderLoading={this._renderLoading}
-                 source={this.source}
-                 javaScriptEnabled={true}
-                 style={this.props.style}/>
+      <WebView
+        automaticallyAdjustContentInsets={false}
+        onNavigationStateChange={this._onNavigationChange}
+        onMessage={this.onMessage}
+        renderError={this._renderError}
+        renderLoading={this._renderLoading}
+        source={this.source}
+        javaScriptEnabled={true}
+        style={{ ...this.props.style, opacity: this.state.loaded ? 1 : 0 }}
+        onLoad={this.onLoad}
+      />
     )
   };
 }
