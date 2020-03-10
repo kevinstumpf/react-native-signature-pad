@@ -132,6 +132,10 @@ export default class SignaturePad extends Component {
         javaScriptEnabled={true}
         style={{ ...this.props.style, opacity: this.state.loaded ? 1 : 0 }}
         onLoad={this.onLoad}
+        scrollEnabled={false}
+        overScrollMode="never"
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
       />
     )
   };
