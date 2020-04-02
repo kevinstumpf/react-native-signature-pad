@@ -45,17 +45,19 @@ var content = (penColor, backgroundColor, dataURL) => `
   };
 
 
-  var bodyWidth = document.body.clientWidth;
-  var bodyHeight = document.body.clientHeight;
-  if(!bodyWidth) {
-    bodyWidth = window.innerWidth;
-  }
-  if(!bodyHeight) {
-    bodyHeight = window.innerHeight;
-  }
+  setTimeout(function() {
+    var bodyWidth = document.body.clientWidth;
+    var bodyHeight = document.body.clientHeight;
+    if(!bodyWidth) {
+      bodyWidth = window.innerWidth;
+    }
+    if(!bodyHeight) {
+      bodyHeight = window.innerHeight;
+    }
 
-  var canvasElement = document.querySelector('canvas');
-  showSignaturePad(canvasElement, bodyWidth, bodyHeight);
+    var canvasElement = document.querySelector('canvas');
+    showSignaturePad(canvasElement, bodyWidth, bodyHeight);
+  }, 500);
 `;
 
 export default content;
