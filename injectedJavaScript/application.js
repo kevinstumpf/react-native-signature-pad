@@ -45,14 +45,8 @@ var content = (penColor, backgroundColor, dataURL) => `
   };
 
 
-  var bodyWidth = document.body.clientWidth;
-  var bodyHeight = document.body.clientHeight;
-  if(!bodyWidth) {
-    bodyWidth = window.innerWidth;
-  }
-  if(!bodyHeight) {
-    bodyHeight = window.innerHeight;
-  }
+  var  bodyWidth = window.innerWidth;
+  var  bodyHeight = window.innerHeight;
 
   var canvasElement = document.querySelector('canvas');
   showSignaturePad(canvasElement, bodyWidth, bodyHeight);
